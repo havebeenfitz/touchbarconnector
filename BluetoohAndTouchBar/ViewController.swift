@@ -149,6 +149,7 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         
         print("connected")
+        central.stopScan()
         tableView.reloadData()
         tempDevice.append(peripheral)
         peripheral.delegate = self
