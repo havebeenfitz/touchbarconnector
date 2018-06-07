@@ -152,8 +152,8 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
         central.stopScan()
         tableView.reloadData()
         tempDevice.append(peripheral)
-        peripheral.delegate = self
-        peripheral.discoverServices(nil)
+        tempDevice.first!.delegate = self
+        tempDevice.first!.discoverServices(nil)
         
         
     }
