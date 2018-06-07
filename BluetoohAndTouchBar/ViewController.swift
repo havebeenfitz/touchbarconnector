@@ -172,7 +172,7 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         
         //tempDevice.append(peripheral)
-        print(peripheral.services)
+        print(peripheral.services ?? "no services")
     }
     
     //MARK: IOBluetooth Devices Inquiry Delegate
@@ -217,7 +217,7 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
         } else {
             bluetoothManager.connect(devices[highlightedIndex], options: nil)
             scrubber.itemViewForItem(at: highlightedIndex)?.layer?.backgroundColor = NSColor.gray.cgColor
-            print("connecting")
+            print("connecting to \(devices[highlightedIndex].name ?? "no name")")
         }
         
         scrubber.itemViewForItem(at: highlightedIndex)?.isSelected = !(scrubber.itemViewForItem(at: highlightedIndex)?.isSelected)!
