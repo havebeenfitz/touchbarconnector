@@ -48,10 +48,6 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
                    AirpodsProfiles().avrcpTargetProfile,
                    AirpodsProfiles().handsFreeProfile]
     
-    
-    var devicesPictures = [Int: NSImage]()
-    var pictures = [#imageLiteral(resourceName: "airpods"), #imageLiteral(resourceName: "watch"), #imageLiteral(resourceName: "iphone")]
-    
     var legacyDevices = [IOBluetoothDevice]()
     let legacyBluetoothManager = IOBluetoothDeviceInquiry(delegate: self)
     
@@ -127,7 +123,7 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
         switch central.state {
         case .poweredOn:
             print("powered on")
-            central.scanForPeripherals(withServices: cbuuids, options: nil)
+            central.scanForPeripherals(withServices: nil, options: nil)
         case .unknown:
             print("state unknown")
         case .resetting:
@@ -158,7 +154,7 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
         tableView.reloadData()
         tempDevice.append(peripheral)
         tempDevice.first!.delegate = self
-        tempDevice.first!.discoverServices(nil)
+        tempDevice.first!.discoverServices(cbuuids)
         
         
     }
@@ -260,7 +256,7 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
         tableView.reloadData()
         scrubber.reloadData()
         
-        bluetoothManager.scanForPeripherals(withServices: cbuuids, options: nil)
+        bluetoothManager.scanForPeripherals(withServices: nil, options: nil)
         
     }
     

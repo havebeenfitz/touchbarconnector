@@ -19,6 +19,6 @@ struct AirpodsProfiles {
     
     let audioSinkProfile = CBUUID(string: "0x110B")
     
-    let aapServerProfile: CBUUID? = nil
-    let wirlessIAPProfile: CBUUID? = nil
+    let aapServerProfile: CBUUID! = nil
+    let wirlessIAPProfile: CBUUID! = nil
 }
