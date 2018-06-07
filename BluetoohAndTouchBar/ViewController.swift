@@ -39,10 +39,16 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
     //MARK:- Vars
 
     let bluetoothManager = CBCentralManager()
-    let cbuuids = [CBUUID]()
     
     var devices = [CBPeripheral]()
     var tempDevice = [CBPeripheral]()
+    let cbuuids = [AirpodsProfiles().audioSinkProfile,
+                   AirpodsProfiles().avrcpRemoteControlControllerProfile,
+                   AirpodsProfiles().avrcpRemoteControlProfile,
+                   AirpodsProfiles().avrcpTargetProfile,
+                   AirpodsProfiles().handsFreeProfile]
+    
+    
     var devicesPictures = [Int: NSImage]()
     var pictures = [#imageLiteral(resourceName: "airpods"), #imageLiteral(resourceName: "watch"), #imageLiteral(resourceName: "iphone")]
     
