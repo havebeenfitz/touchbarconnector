@@ -39,7 +39,7 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
     //MARK:- Vars
 
     let bluetoothManager = CBCentralManager()
-    let cbuuids = [CBUUID]()
+    let cbuuids = [CBUUID(string: "0x111E")]
     
     var devices = [CBPeripheral]()
     var tempDevice = [CBPeripheral]()
@@ -138,7 +138,6 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         print("found", peripheral.name ?? "default")
-        
         if !devices.contains(peripheral) && peripheral.name != nil {
             devices.append(peripheral)
             tableView.reloadData()
@@ -153,7 +152,7 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
         tableView.reloadData()
         tempDevice.append(peripheral)
         tempDevice.first!.delegate = self
-        tempDevice.first!.discoverServices(nil)
+        tempDevice.first!.discoverServices([CBUUID(string: "0x111E")]) // Hands free service
         
         
     }
@@ -173,6 +172,7 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
         
         //tempDevice.append(peripheral)
         print(peripheral.services ?? "no services")
+        
     }
     
     //MARK: IOBluetooth Devices Inquiry Delegate
@@ -180,14 +180,14 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
     func deviceInquiryStarted(_ sender: IOBluetoothDeviceInquiry!) {
         print("started")
     }
-    
+
     func deviceInquiryDeviceFound(_ sender: IOBluetoothDeviceInquiry!, device: IOBluetoothDevice!) {
         print("found device")
         legacyDevices.append(device)
         scrubber.reloadData()
         tableView.reloadData()
     }
-    
+
     func deviceInquiryComplete(_ sender: IOBluetoothDeviceInquiry!, error: IOReturn, aborted: Bool) {
         print("completed")
     }
@@ -256,14 +256,6 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
         
         bluetoothManager.scanForPeripherals(withServices: cbuuids, options: nil)
         
-    }
-    
-    @IBAction func stopScanPressed(_ sender: NSButton) {
-        
-        legacyBluetoothManager?.stop()
-        bluetoothManager.stopScan()
-        print("scan stopped, timer killed")
-        timer?.invalidate()
     }
     
 }

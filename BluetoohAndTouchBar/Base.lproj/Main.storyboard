@@ -278,31 +278,16 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="TST-hq-ZEx" viewBased="YES" id="W6C-tb-jKk">
-                                            <rect key="frame" x="0.0" y="0.0" width="616.5" height="264"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="614" height="264"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <touchBar key="touchBar" id="jSp-jL-DrA">
                                                 <touchBarItems>
-                                                    <touchBarItem id="jQh-nk-Rxa">
-                                                        <viewController key="viewController" id="xJ2-dK-VXa">
-                                                            <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9cy-eD-QKS">
-                                                                <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <buttonCell key="cell" type="push" title="Stop" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="XFn-Il-Q3a">
-                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                    <font key="font" usesAppearanceFont="YES"/>
-                                                                </buttonCell>
-                                                                <connections>
-                                                                    <action selector="stopScanPressed:" target="XfG-lQ-9wD" id="FkK-dC-NoA"/>
-                                                                </connections>
-                                                            </button>
-                                                        </viewController>
-                                                    </touchBarItem>
                                                     <touchBarItem id="dKS-EI-wBs">
                                                         <viewController key="viewController" id="jM2-ge-fmc">
-                                                            <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qvO-Eb-WBT">
+                                                            <button key="view" verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qvO-Eb-WBT">
                                                                 <rect key="frame" x="0.0" y="0.0" width="90" height="30"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                <buttonCell key="cell" type="push" title="Rescan" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="5re-oE-nS4">
+                                                                <buttonCell key="cell" type="push" title="Rescan" bezelStyle="rounded" image="NSBluetoothTemplate" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="5re-oE-nS4">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" usesAppearanceFont="YES"/>
                                                                     <connections>
@@ -316,7 +301,7 @@
                                                     <touchBarItem id="rIR-zL-wAv">
                                                         <viewController key="viewController" id="S82-F8-RKa">
                                                             <scrubber key="view" autoresizesSubviews="NO" mode="1" itemAlignment="3" translatesAutoresizingMaskIntoConstraints="NO" id="hUB-Lx-xNB">
-                                                                <rect key="frame" x="0.0" y="0.0" width="507" height="30"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="587" height="30"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <scrubberFlowLayout key="scrubberLayout" itemSpacing="5">
                                                                     <size key="itemSize" width="150" height="30"/>
@@ -408,7 +393,7 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn identifier="UUIDCellID" width="126" minWidth="40" maxWidth="1000" id="fVq-Er-yFY">
+                                                <tableColumn identifier="UUIDCellID" width="123.5" minWidth="40" maxWidth="1000" id="fVq-Er-yFY">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="status">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -422,7 +407,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="ke6-99-3qe">
-                                                            <rect key="frame" x="488.5" y="1" width="126" height="17"/>
+                                                            <rect key="frame" x="488.5" y="1" width="124" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GOx-7T-YVR">
@@ -431,7 +416,7 @@
                                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="suF-jh-fuH"/>
                                                                 </imageView>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hag-C1-wRJ">
-                                                                    <rect key="frame" x="25" y="0.0" width="101" height="17"/>
+                                                                    <rect key="frame" x="25" y="0.0" width="99" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="Kwz-QJ-5bD">
                                                                         <font key="font" metaFont="system"/>
@@ -456,7 +441,7 @@
                                     </subviews>
                                     <nil key="backgroundColor"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="gav-Vq-L4m">
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="gav-Vq-L4m">
                                     <rect key="frame" x="1" y="273" width="614" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -465,7 +450,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <tableHeaderView key="headerView" id="TST-hq-ZEx">
-                                    <rect key="frame" x="0.0" y="0.0" width="616.5" height="25"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="614" height="25"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
@@ -490,5 +475,6 @@
     </scenes>
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>
+        <image name="NSBluetoothTemplate" width="7" height="14"/>
     </resources>
 </document>
