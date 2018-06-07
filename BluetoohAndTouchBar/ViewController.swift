@@ -39,7 +39,7 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
     //MARK:- Vars
 
     let bluetoothManager = CBCentralManager()
-    let cbuuids = [CBUUID(string: "0x111E")]
+    let cbuuids = [CBUUID]()
     
     var devices = [CBPeripheral]()
     var tempDevice = [CBPeripheral]()
@@ -152,7 +152,7 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
         tableView.reloadData()
         tempDevice.append(peripheral)
         tempDevice.first!.delegate = self
-        tempDevice.first!.discoverServices([CBUUID(string: "0x111E")]) // Hands free service
+        tempDevice.first!.discoverServices(nil)
         
         
     }
