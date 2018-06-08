@@ -27,7 +27,10 @@ fileprivate enum DeviceType {
 
 //MARK:- Controller
 
-class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDelegate, NSTableViewDelegate, NSTableViewDataSource, NSScrubberDelegate, NSScrubberDataSource, IOBluetoothDeviceInquiryDelegate {
+class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource,
+                      CBCentralManagerDelegate, CBPeripheralDelegate,
+                      NSScrubberDelegate, NSScrubberDataSource,
+                      IOBluetoothDeviceInquiryDelegate, IOBluetoothHandsFreeDelegate, IOBluetoothHandsFreeDeviceDelegate {
    
     //MARK:- Outlets
     
@@ -47,8 +50,8 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
                    AirpodsProfiles().avrcpTargetProfile,
                    AirpodsProfiles().handsFreeProfile]
     
-    var legacyDevices = [IOBluetoothDevice]()
-    let legacyBluetoothManager = IOBluetoothDeviceInquiry(delegate: self)
+    var ioDevices = [IOBluetoothDevice]()
+    let ioBluetoothManager = IOBluetoothDeviceInquiry(delegate: self)
     
     var timer: Timer? = nil
     
@@ -67,10 +70,10 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
         
         bluetoothManager.delegate = self
         
-//        legacyBluetoothManager?.delegate = self
-//        legacyBluetoothManager?.start()
-//        loadConnectedDevices()
-//        timer = Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(repeatScan), userInfo: nil, repeats: true)
+        ioBluetoothManager?.delegate = self
+        ioBluetoothManager?.start()
+        loadConnectedDevices()
+        timer = Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(repeatScan), userInfo: nil, repeats: true)
 
     }
     
@@ -86,21 +89,21 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
         var text = ""
         var cellIdentifier: String = ""
         
-        let item = devices[row]
+        let item = ioDevices[row]
         
         if tableColumn == tableView.tableColumns[0] {
             
-            if let name = item.name {
+            if let name = item.nameOrAddress {
                 text = name
             } else {
                 text = "Unnamed device"
             }
             cellIdentifier = CellIdentifiers.NameCell
         } else if tableColumn == tableView.tableColumns[1] {
-            text = item.identifier.uuidString
+            text = item.addressString
             cellIdentifier = CellIdentifiers.UUIDCell
         } else if tableColumn == tableView.tableColumns[2] {
-            text = String(item.state.rawValue)
+            text = String(item.isConnected())
             cellIdentifier = CellIdentifiers.StatusCell
         }
         
@@ -114,7 +117,7 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
     }
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return devices.count
+        return ioDevices.count
     }
     
     //MARK:- Bluetooth Central manager delegate
@@ -185,26 +188,28 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
 
     func deviceInquiryDeviceFound(_ sender: IOBluetoothDeviceInquiry!, device: IOBluetoothDevice!) {
         print("found device")
-        legacyDevices.append(device)
+        ioDevices.append(device)
         scrubber.reloadData()
         tableView.reloadData()
     }
 
     func deviceInquiryComplete(_ sender: IOBluetoothDeviceInquiry!, error: IOReturn, aborted: Bool) {
+       
+        print(sender.foundDevices())
         print("completed")
     }
     
     //MARK: Scrubber Delegate and Datasource
     
     func numberOfItems(for scrubber: NSScrubber) -> Int {
-        return devices.count
+        return ioDevices.count
     }
     
     func scrubber(_ scrubber: NSScrubber, viewForItemAt index: Int) -> NSScrubberItemView {
         
         let itemView = scrubber.makeItem(withIdentifier: scrubberDeviceItemID, owner: nil) as! NSScrubberTextItemView
         
-        guard let name = devices[index].name else { return itemView }
+        guard let name = ioDevices[index].nameOrAddress else { return itemView }
         itemView.title = name
         
         return itemView
@@ -214,30 +219,33 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
         
         if (scrubber.itemViewForItem(at: highlightedIndex)?.isSelected)! {
             print("cancel connection")
-            bluetoothManager.cancelPeripheralConnection(devices[highlightedIndex])
+            //bluetoothManager.cancelPeripheralConnection(devices[highlightedIndex])
+            ioDevices[highlightedIndex].closeConnection()
             scrubber.itemViewForItem(at: highlightedIndex)?.layer?.backgroundColor = NSColor.clear.cgColor
         } else {
-            bluetoothManager.connect(devices[highlightedIndex], options: nil)
+            //bluetoothManager.connect(devices[highlightedIndex], options: nil)
+            ioDevices[highlightedIndex].openConnection()
             scrubber.itemViewForItem(at: highlightedIndex)?.layer?.backgroundColor = NSColor.gray.cgColor
-            print("connecting to \(devices[highlightedIndex].name ?? "no name")")
+            print("connecting to \(ioDevices[highlightedIndex].nameOrAddress ?? "no name")")
         }
-        
+
         scrubber.itemViewForItem(at: highlightedIndex)?.isSelected = !(scrubber.itemViewForItem(at: highlightedIndex)?.isSelected)!
-        
+        ioBluetoothManager?.stop()
+        timer?.invalidate()
+        print("timer killed")
     }
     
     //MARK: Misc
     
     @objc func repeatScan() {
-        legacyBluetoothManager?.stop()
-        legacyBluetoothManager?.delegate = self
-        legacyBluetoothManager?.start()
-        
+        ioBluetoothManager?.stop()
+        ioBluetoothManager?.delegate = self
+        ioBluetoothManager?.start()
     }
     
     func loadConnectedDevices() {
         
-        legacyDevices += (legacyBluetoothManager?.foundDevices() as! [IOBluetoothDevice])
+        ioDevices += (ioBluetoothManager?.foundDevices() as! [IOBluetoothDevice])
         tableView.reloadData()
         scrubber.reloadData()
         
@@ -248,9 +256,10 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
     @IBAction func connectButtonPressed(_ sender: Any) {
         print("rescan")
         
-        //timer?.fire()
-        //legacyDevices.removeAll()
-        //legacyBluetoothManager?.start()
+        timer?.fire()
+        ioDevices.removeAll()
+        
+        repeatScan()
         
         devices.removeAll()
         tableView.reloadData()
@@ -261,9 +270,13 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
     }
     @IBAction func showIOBTController(_ sender: NSButton) {
         
-        let options = IOBluetoothServiceBrowserControllerOptions(kIOBluetoothServiceBrowserControllerOptionsNone)
+        let options = IOBluetoothServiceBrowserControllerOptions(0)
+        let window = IOBluetoothServiceBrowserController(options)
         
-        IOBluetoothServiceBrowserController(options).runModal()
+        window?.setOptions(options)
+        window?.runModal()
+        print( window?.getResults())
+        
     }
     
 }

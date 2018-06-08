@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E43AF56220CACEAD00012234 /* IOBTQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43AF56020CACEAD00012234 /* IOBTQuery.swift */; };
 		E497D4EE20ACC0920039DA03 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497D4ED20ACC0920039DA03 /* AppDelegate.swift */; };
 		E497D4F020ACC0920039DA03 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497D4EF20ACC0920039DA03 /* ViewController.swift */; };
 		E497D4F220ACC0940039DA03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E497D4F120ACC0940039DA03 /* Assets.xcassets */; };
@@ -16,7 +15,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		E43AF56020CACEAD00012234 /* IOBTQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOBTQuery.swift; sourceTree = "<group>"; };
 		E497D4EA20ACC0920039DA03 /* BluetoohAndTouchBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BluetoohAndTouchBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E497D4ED20ACC0920039DA03 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E497D4EF20ACC0920039DA03 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -60,7 +58,6 @@
 				E497D4ED20ACC0920039DA03 /* AppDelegate.swift */,
 				E497D4EF20ACC0920039DA03 /* ViewController.swift */,
 				E4ADB53A20C8FE0D006E6723 /* AirpodsProfiles.swift */,
-				E43AF56020CACEAD00012234 /* IOBTQuery.swift */,
 				E497D4F120ACC0940039DA03 /* Assets.xcassets */,
 				E497D4F320ACC0940039DA03 /* Main.storyboard */,
 				E497D4F620ACC0940039DA03 /* Info.plist */,
@@ -141,7 +138,6 @@
 			files = (
 				E4ADB53B20C8FE0D006E6723 /* AirpodsProfiles.swift in Sources */,
 				E497D4F020ACC0920039DA03 /* ViewController.swift in Sources */,
-				E43AF56220CACEAD00012234 /* IOBTQuery.swift in Sources */,
 				E497D4EE20ACC0920039DA03 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
