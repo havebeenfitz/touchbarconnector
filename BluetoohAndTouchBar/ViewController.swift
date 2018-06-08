@@ -9,6 +9,7 @@
 import Cocoa
 import CoreBluetooth
 import IOBluetooth
+import IOBluetoothUI
 import ColorSync
 
 //MARK: Enums
@@ -28,8 +29,6 @@ fileprivate enum DeviceType {
 
 class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDelegate, NSTableViewDelegate, NSTableViewDataSource, NSScrubberDelegate, NSScrubberDataSource, IOBluetoothDeviceInquiryDelegate {
    
-    
-    
     //MARK:- Outlets
     
     @IBOutlet weak var clipView: NSClipView!
@@ -72,6 +71,7 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
 //        legacyBluetoothManager?.start()
 //        loadConnectedDevices()
 //        timer = Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(repeatScan), userInfo: nil, repeats: true)
+
     }
     
     override func viewWillDisappear() {
@@ -258,6 +258,12 @@ class ViewController: NSViewController, CBCentralManagerDelegate, CBPeripheralDe
         
         bluetoothManager.scanForPeripherals(withServices: nil, options: nil)
         
+    }
+    @IBAction func showIOBTController(_ sender: NSButton) {
+        
+        let options = IOBluetoothServiceBrowserControllerOptions(kIOBluetoothServiceBrowserControllerOptionsNone)
+        
+        IOBluetoothServiceBrowserController(options).runModal()
     }
     
 }
