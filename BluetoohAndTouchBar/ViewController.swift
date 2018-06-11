@@ -57,11 +57,17 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         scrubber.dataSource = self
         scrubber.register(NSScrubberTextItemView.self, forItemIdentifier: scrubberDeviceItemID)
         
+        //loadConnected()
+        
         ioBluetoothManager.searchType = kIOBluetoothDeviceSearchLE.rawValue
         ioBluetoothManager.updateNewDeviceNames = true
         ioBluetoothManager.delegate = self
         
+        loadConnected()
+        
         ioBluetoothManager.start()
+        
+        
         
         timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(repeatScan), userInfo: nil, repeats: true)
 
@@ -70,6 +76,17 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
     override func viewWillDisappear() {
         print("kill timer")
+    }
+    
+    func loadConnected() {
+        
+        for device in IOBluetoothDevice.pairedDevices() {
+            ioDevices.append(device as! IOBluetoothDevice)
+            
+            tableView.reloadData()
+            scrubber.reloadData()
+        }
+        
     }
     
     //MARK:- Tableview delegate and datasource
@@ -140,20 +157,24 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     func scrubber(_ scrubber: NSScrubber, viewForItemAt index: Int) -> NSScrubberItemView {
         
         let itemView = scrubber.makeItem(withIdentifier: scrubberDeviceItemID, owner: nil) as! NSScrubberTextItemView
-        
         guard let name = ioDevices[index].nameOrAddress else { return itemView }
+        
         itemView.title = name
+        
+        if ioDevices[index].isConnected() {
+            itemView.layer?.backgroundColor = NSColor.gray.cgColor
+        }
         
         return itemView
     }
     
     func scrubber(_ scrubber: NSScrubber, didHighlightItemAt highlightedIndex: Int) {
         
-        if (scrubber.itemViewForItem(at: highlightedIndex)?.isSelected)! {
+        if ioDevices[highlightedIndex].isConnected() {
             print("cancel connection")
             ioDevices[highlightedIndex].closeConnection()
             scrubber.itemViewForItem(at: highlightedIndex)?.layer?.backgroundColor = NSColor.clear.cgColor
-        } else {
+        } else if !ioDevices[highlightedIndex].isConnected() {
             DispatchQueue.global(qos: .background).async {
                 if !self.ioDevices[highlightedIndex].isPaired() {
                     
