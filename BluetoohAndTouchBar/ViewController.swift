@@ -100,6 +100,10 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
     func deviceInquiryStarted(_ sender: IOBluetoothDeviceInquiry!) {
         print("started")
+        
+        progressIndicator.startAnimation(self)
+        progressIndicator.isHidden = false
+        
     }
 
     func deviceInquiryDeviceFound(_ sender: IOBluetoothDeviceInquiry!, device: IOBluetoothDevice!) {
@@ -113,6 +117,9 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     }
 
     func deviceInquiryComplete(_ sender: IOBluetoothDeviceInquiry!, error: IOReturn, aborted: Bool) {
+        
+        progressIndicator.stopAnimation(self)
+        progressIndicator.isHidden = true
         print("completed")
     }
     
@@ -254,14 +261,20 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         
         timer?.fire()
         ioDevices.removeAll()
-        repeatScan()
-        loadPairedDevices()
+        ioBluetoothManager.clearFoundDevices()
         
         tableView.reloadData()
         scrubber.reloadData()
         
+        repeatScan()
+        
+        loadPairedDevices()
+        
+        
+        
     }
     @IBAction func stopButtonPressed(_ sender: Any) {
+        timer?.invalidate()
         ioBluetoothManager.stop()
         progressIndicator.stopAnimation(self)
         progressIndicator.isHidden = true

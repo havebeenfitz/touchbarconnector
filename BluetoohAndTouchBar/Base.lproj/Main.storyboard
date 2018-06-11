@@ -3,6 +3,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaDFRPlugin" version="14019"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
         <capability name="the Touch Bar" minToolsVersion="8.1" minSystemVersion="10.12.2" requiredIntegratedClassName="NSTouchBar"/>
@@ -150,7 +151,7 @@
             <objects>
                 <windowController id="B8D-0N-5wS" userLabel="Bluetooth scanner" sceneMemberID="viewController">
                     <window key="window" title="Bluetooth Touch Connector" oneShot="NO" showsToolbarButton="NO" animationBehavior="default" titlebarAppearsTransparent="YES" id="IQv-IB-iLA" userLabel="BT Scanner">
-                        <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES" fullSizeContentView="YES"/>
+                        <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
                         <windowCollectionBehavior key="collectionBehavior" fullScreenNone="YES" fullScreenDisallowsTiling="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="415" y="240" width="261" height="270"/>
@@ -175,13 +176,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="261" height="310"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPO-Ic-eSm">
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPO-Ic-eSm">
                                 <rect key="frame" x="0.0" y="50" width="261" height="216"/>
                                 <clipView key="contentView" drawsBackground="NO" id="KuT-hO-W9I">
                                     <rect key="frame" x="0.0" y="0.0" width="261" height="216"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="sequential" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="medium" headerView="TST-hq-ZEx" viewBased="YES" id="W6C-tb-jKk">
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="sequential" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="medium" headerView="VTV-IS-nLS" viewBased="YES" id="W6C-tb-jKk">
                                             <rect key="frame" x="0.0" y="0.0" width="261" height="191"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <touchBar key="touchBar" id="jSp-jL-DrA">
@@ -266,14 +267,14 @@
                                     <nil key="backgroundColor"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="gav-Vq-L4m">
-                                    <rect key="frame" x="1" y="243" width="259" height="16"/>
+                                    <rect key="frame" x="-100" y="-100" width="259" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="GnY-fX-YYz">
                                     <rect key="frame" x="224" y="17" width="15" height="102"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <tableHeaderView key="headerView" hidden="YES" id="TST-hq-ZEx">
+                                <tableHeaderView key="headerView" id="VTV-IS-nLS">
                                     <rect key="frame" x="0.0" y="0.0" width="261" height="25"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
@@ -281,19 +282,8 @@
                             <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rGf-7G-sJJ">
                                 <rect key="frame" x="131" y="0.0" width="0.0" height="0.0"/>
                             </stackView>
-                            <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="08h-Kz-zZq">
-                                <rect key="frame" x="0.0" y="0.0" width="131" height="49"/>
-                                <buttonCell key="cell" type="bevel" title=" Rescan" bezelStyle="rounded" image="NSBluetoothTemplate" imagePosition="leading" alignment="center" inset="2" id="shl-aM-LVj">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="rescanUI:" target="XfG-lQ-9wD" id="IEc-KV-RfP"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l3R-ch-1DT">
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="l3R-ch-1DT">
                                 <rect key="frame" x="131" y="0.0" width="131" height="49"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="bevel" title="Stop" bezelStyle="rounded" imagePosition="left" alignment="center" inset="2" id="K43-JG-yBN">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -302,24 +292,39 @@
                                     <action selector="stopButtonPressed:" target="XfG-lQ-9wD" id="j5u-OQ-5zd"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="08h-Kz-zZq">
+                                <rect key="frame" x="0.0" y="0.0" width="131" height="49"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="49" id="y3P-s2-qt1"/>
+                                </constraints>
+                                <buttonCell key="cell" type="bevel" title=" Rescan" bezelStyle="rounded" image="NSBluetoothTemplate" imagePosition="leading" alignment="center" inset="2" id="shl-aM-LVj">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="rescanUI:" target="XfG-lQ-9wD" id="IEc-KV-RfP"/>
+                                </connections>
+                            </button>
                             <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="jSA-vf-IS6">
                                 <rect key="frame" x="123" y="245" width="16" height="16"/>
                             </progressIndicator>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="jSA-vf-IS6" firstAttribute="centerX" secondItem="hPO-Ic-eSm" secondAttribute="centerX" constant="0.5" id="04C-8S-rGT"/>
-                            <constraint firstItem="08h-Kz-zZq" firstAttribute="top" secondItem="hPO-Ic-eSm" secondAttribute="bottom" constant="1" id="9b5-A8-AT7"/>
-                            <constraint firstAttribute="trailing" secondItem="hPO-Ic-eSm" secondAttribute="trailing" id="BLh-3Z-RoC"/>
-                            <constraint firstAttribute="bottom" secondItem="rGf-7G-sJJ" secondAttribute="bottom" id="CG6-f0-hV4"/>
-                            <constraint firstAttribute="bottom" secondItem="hPO-Ic-eSm" secondAttribute="bottom" constant="50" id="EvY-Og-kVx"/>
-                            <constraint firstItem="jSA-vf-IS6" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="49" id="FBv-c8-Jqm"/>
-                            <constraint firstItem="hPO-Ic-eSm" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Hvb-oQ-5PL"/>
-                            <constraint firstItem="rGf-7G-sJJ" firstAttribute="centerX" secondItem="hPO-Ic-eSm" secondAttribute="centerX" id="IUK-sk-ujd"/>
-                            <constraint firstItem="08h-Kz-zZq" firstAttribute="trailing" secondItem="hPO-Ic-eSm" secondAttribute="trailing" constant="-130" id="QXJ-Pe-2AP"/>
-                            <constraint firstItem="08h-Kz-zZq" firstAttribute="leading" secondItem="hPO-Ic-eSm" secondAttribute="leading" id="Zpu-2U-4v4"/>
-                            <constraint firstItem="jSA-vf-IS6" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="49" id="k7J-63-Nqb"/>
-                            <constraint firstItem="08h-Kz-zZq" firstAttribute="bottom" secondItem="rGf-7G-sJJ" secondAttribute="bottom" id="lJE-Ux-XLr"/>
-                            <constraint firstItem="hPO-Ic-eSm" firstAttribute="top" secondItem="jSA-vf-IS6" secondAttribute="bottom" constant="-21" id="tcf-qY-c6d"/>
+                            <constraint firstAttribute="trailing" secondItem="l3R-ch-1DT" secondAttribute="trailing" constant="-1" id="3qQ-Gu-l2w"/>
+                            <constraint firstItem="l3R-ch-1DT" firstAttribute="leading" secondItem="rGf-7G-sJJ" secondAttribute="leading" id="42D-vX-2uX"/>
+                            <constraint firstItem="jSA-vf-IS6" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="49" id="5kb-sH-iCo"/>
+                            <constraint firstItem="08h-Kz-zZq" firstAttribute="bottom" secondItem="rGf-7G-sJJ" secondAttribute="bottom" id="NYs-xB-1yj"/>
+                            <constraint firstItem="jSA-vf-IS6" firstAttribute="centerX" secondItem="rGf-7G-sJJ" secondAttribute="centerX" id="P29-rG-B3M"/>
+                            <constraint firstAttribute="trailing" secondItem="hPO-Ic-eSm" secondAttribute="trailing" id="SOv-Eu-9O7"/>
+                            <constraint firstAttribute="bottom" secondItem="08h-Kz-zZq" secondAttribute="bottom" id="aME-uB-AWz"/>
+                            <constraint firstItem="08h-Kz-zZq" firstAttribute="firstBaseline" secondItem="l3R-ch-1DT" secondAttribute="firstBaseline" id="chs-Jr-gqn"/>
+                            <constraint firstItem="08h-Kz-zZq" firstAttribute="baseline" secondItem="l3R-ch-1DT" secondAttribute="baseline" id="e4I-40-FMw"/>
+                            <constraint firstItem="hPO-Ic-eSm" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="g0V-gZ-RTS"/>
+                            <constraint firstItem="jSA-vf-IS6" firstAttribute="centerX" secondItem="hPO-Ic-eSm" secondAttribute="centerX" id="gY8-Bm-vds"/>
+                            <constraint firstItem="08h-Kz-zZq" firstAttribute="top" secondItem="hPO-Ic-eSm" secondAttribute="bottom" constant="1" id="hv1-WW-hbe"/>
+                            <constraint firstItem="rGf-7G-sJJ" firstAttribute="trailing" secondItem="08h-Kz-zZq" secondAttribute="trailing" id="nO3-wc-jHw"/>
+                            <constraint firstItem="hPO-Ic-eSm" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="44" id="oSG-zS-w1s"/>
+                            <constraint firstItem="hPO-Ic-eSm" firstAttribute="leading" secondItem="08h-Kz-zZq" secondAttribute="leading" id="uXx-hM-s6z"/>
                         </constraints>
                     </view>
                     <connections>
