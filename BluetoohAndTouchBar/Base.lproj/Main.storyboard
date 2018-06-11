@@ -149,8 +149,9 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" userLabel="Bluetooth scanner" sceneMemberID="viewController">
-                    <window key="window" title="Bluetooth Touchbar Connector" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA" userLabel="BT Scanner">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                    <window key="window" title="Bluetooth Touch Connector" oneShot="NO" showsToolbarButton="NO" animationBehavior="default" titlebarAppearsTransparent="YES" id="IQv-IB-iLA" userLabel="BT Scanner">
+                        <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES" fullSizeContentView="YES"/>
+                        <windowCollectionBehavior key="collectionBehavior" fullScreenNone="YES" fullScreenDisallowsTiling="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="415" y="240" width="261" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1057"/>
@@ -174,14 +175,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="261" height="310"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPO-Ic-eSm">
-                                <rect key="frame" x="0.0" y="50" width="261" height="260"/>
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPO-Ic-eSm">
+                                <rect key="frame" x="0.0" y="50" width="261" height="216"/>
                                 <clipView key="contentView" drawsBackground="NO" id="KuT-hO-W9I">
-                                    <rect key="frame" x="1" y="0.0" width="259" height="259"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="261" height="216"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="sequential" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="medium" headerView="TST-hq-ZEx" viewBased="YES" id="W6C-tb-jKk">
-                                            <rect key="frame" x="0.0" y="0.0" width="259" height="234"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="261" height="191"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <touchBar key="touchBar" id="jSp-jL-DrA">
                                                 <touchBarItems>
@@ -203,11 +204,11 @@
                                                     </touchBarItem>
                                                     <touchBarItem id="rIR-zL-wAv">
                                                         <viewController key="viewController" id="S82-F8-RKa">
-                                                            <scrubber key="view" autoresizesSubviews="NO" focusRingType="exterior" mode="1" itemAlignment="3" showsArrowButtons="YES" showsAdditionalContentIndicators="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hUB-Lx-xNB">
+                                                            <scrubber key="view" mode="1" itemAlignment="3" showsArrowButtons="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hUB-Lx-xNB">
                                                                 <rect key="frame" x="0.0" y="0.0" width="587" height="30"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
-                                                                <scrubberFlowLayout key="scrubberLayout" itemSpacing="5">
-                                                                    <size key="itemSize" width="160" height="50"/>
+                                                                <scrubberFlowLayout key="scrubberLayout" itemSpacing="1">
+                                                                    <size key="itemSize" width="170" height="50"/>
                                                                 </scrubberFlowLayout>
                                                             </scrubber>
                                                         </viewController>
@@ -218,7 +219,7 @@
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="NameCellID" width="256" minWidth="40" maxWidth="1000" id="fmC-ac-umg">
+                                                <tableColumn identifier="NameCellID" width="258" minWidth="40" maxWidth="1000" id="fmC-ac-umg">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -232,11 +233,11 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="n6e-jA-u0q">
-                                                            <rect key="frame" x="1" y="1" width="256" height="17"/>
+                                                            <rect key="frame" x="1" y="1" width="258" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PYt-Bo-1y2">
-                                                                    <rect key="frame" x="1" y="-1" width="254" height="19"/>
+                                                                    <rect key="frame" x="1" y="-1" width="256" height="19"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" title="Table View Cell" id="Yiu-w5-L5f">
                                                                         <font key="font" metaFont="system" size="15"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -265,7 +266,7 @@
                                     <nil key="backgroundColor"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="gav-Vq-L4m">
-                                    <rect key="frame" x="1" y="273" width="614" height="16"/>
+                                    <rect key="frame" x="1" y="243" width="259" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="GnY-fX-YYz">
@@ -273,7 +274,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <tableHeaderView key="headerView" hidden="YES" id="TST-hq-ZEx">
-                                    <rect key="frame" x="0.0" y="0.0" width="259" height="25"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="261" height="25"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
@@ -281,8 +282,8 @@
                                 <rect key="frame" x="131" y="0.0" width="0.0" height="0.0"/>
                             </stackView>
                             <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="08h-Kz-zZq">
-                                <rect key="frame" x="0.0" y="0.0" width="261" height="49"/>
-                                <buttonCell key="cell" type="bevel" title="Rescan" bezelStyle="rounded" image="NSBluetoothTemplate" imagePosition="leading" alignment="center" inset="2" id="shl-aM-LVj">
+                                <rect key="frame" x="0.0" y="0.0" width="131" height="49"/>
+                                <buttonCell key="cell" type="bevel" title=" Rescan" bezelStyle="rounded" image="NSBluetoothTemplate" imagePosition="leading" alignment="center" inset="2" id="shl-aM-LVj">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -290,22 +291,40 @@
                                     <action selector="rescanUI:" target="XfG-lQ-9wD" id="IEc-KV-RfP"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l3R-ch-1DT">
+                                <rect key="frame" x="131" y="0.0" width="131" height="49"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="bevel" title="Stop" bezelStyle="rounded" imagePosition="left" alignment="center" inset="2" id="K43-JG-yBN">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="stopButtonPressed:" target="XfG-lQ-9wD" id="j5u-OQ-5zd"/>
+                                </connections>
+                            </button>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="jSA-vf-IS6">
+                                <rect key="frame" x="123" y="245" width="16" height="16"/>
+                            </progressIndicator>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="hPO-Ic-eSm" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="4wb-ef-w4t"/>
+                            <constraint firstItem="jSA-vf-IS6" firstAttribute="centerX" secondItem="hPO-Ic-eSm" secondAttribute="centerX" constant="0.5" id="04C-8S-rGT"/>
                             <constraint firstItem="08h-Kz-zZq" firstAttribute="top" secondItem="hPO-Ic-eSm" secondAttribute="bottom" constant="1" id="9b5-A8-AT7"/>
                             <constraint firstAttribute="trailing" secondItem="hPO-Ic-eSm" secondAttribute="trailing" id="BLh-3Z-RoC"/>
                             <constraint firstAttribute="bottom" secondItem="rGf-7G-sJJ" secondAttribute="bottom" id="CG6-f0-hV4"/>
                             <constraint firstAttribute="bottom" secondItem="hPO-Ic-eSm" secondAttribute="bottom" constant="50" id="EvY-Og-kVx"/>
+                            <constraint firstItem="jSA-vf-IS6" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="49" id="FBv-c8-Jqm"/>
                             <constraint firstItem="hPO-Ic-eSm" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Hvb-oQ-5PL"/>
                             <constraint firstItem="rGf-7G-sJJ" firstAttribute="centerX" secondItem="hPO-Ic-eSm" secondAttribute="centerX" id="IUK-sk-ujd"/>
-                            <constraint firstItem="08h-Kz-zZq" firstAttribute="trailing" secondItem="hPO-Ic-eSm" secondAttribute="trailing" id="QXJ-Pe-2AP"/>
+                            <constraint firstItem="08h-Kz-zZq" firstAttribute="trailing" secondItem="hPO-Ic-eSm" secondAttribute="trailing" constant="-130" id="QXJ-Pe-2AP"/>
                             <constraint firstItem="08h-Kz-zZq" firstAttribute="leading" secondItem="hPO-Ic-eSm" secondAttribute="leading" id="Zpu-2U-4v4"/>
+                            <constraint firstItem="jSA-vf-IS6" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="49" id="k7J-63-Nqb"/>
                             <constraint firstItem="08h-Kz-zZq" firstAttribute="bottom" secondItem="rGf-7G-sJJ" secondAttribute="bottom" id="lJE-Ux-XLr"/>
+                            <constraint firstItem="hPO-Ic-eSm" firstAttribute="top" secondItem="jSA-vf-IS6" secondAttribute="bottom" constant="-21" id="tcf-qY-c6d"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="clipView" destination="KuT-hO-W9I" id="R3C-BC-5Sk"/>
+                        <outlet property="progressIndicator" destination="jSA-vf-IS6" id="b44-4D-ldT"/>
                         <outlet property="scrubber" destination="hUB-Lx-xNB" id="Puv-pR-qAs"/>
                         <outlet property="tableView" destination="W6C-tb-jKk" id="3Gj-qS-A72"/>
                     </connections>

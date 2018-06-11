@@ -35,12 +35,12 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     @IBOutlet weak var clipView: NSClipView!
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var scrubber: NSScrubber!
+    @IBOutlet weak var progressIndicator: NSProgressIndicator!
     
     //MARK:- Vars
     
     var ioDevices = [IOBluetoothDevice]()
     let ioBluetoothManager = IOBluetoothDeviceInquiry()
-    let pairingController = IOBluetoothPairingController(windowNibName: NSNib.Name(rawValue: "PairingController"))
     
     var timer: Timer? = nil
     
@@ -56,12 +56,14 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         scrubber.delegate = self
         scrubber.dataSource = self
         scrubber.register(NSScrubberTextItemView.self, forItemIdentifier: scrubberDeviceItemID)
+        //scrubber.register(NSScrubberImageItemView.self, forItemIdentifier: scrubberDeviceItemID)
         
         ioBluetoothManager.searchType = kIOBluetoothDeviceSearchLE.rawValue
         ioBluetoothManager.updateNewDeviceNames = true
         ioBluetoothManager.delegate = self
         
         ioBluetoothManager.start()
+        progressIndicator.startAnimation(self)
         loadPairedDevices()
         
         timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(repeatScan), userInfo: nil, repeats: true)
@@ -81,12 +83,9 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         var cellIdentifier: String = ""
         
         let item = ioDevices[row]
-        
-        if tableColumn == tableView.tableColumns[0] {
-            
-            text = item.nameOrAddress
-            cellIdentifier = CellIdentifiers.NameCell
-        }
+    
+        text = item.nameOrAddress
+        cellIdentifier = CellIdentifiers.NameCell
             
         if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellIdentifier), owner: nil) as? NSTableCellView {
             
@@ -128,22 +127,43 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     }
     
     func scrubber(_ scrubber: NSScrubber, viewForItemAt index: Int) -> NSScrubberItemView {
-        
+
         let itemView = scrubber.makeItem(withIdentifier: scrubberDeviceItemID, owner: nil) as! NSScrubberTextItemView
         guard let name = ioDevices[index].nameOrAddress else { return itemView }
-        
+
         itemView.title = name
-        
+
         if ioDevices[index].isConnected() {
             itemView.layer?.backgroundColor = NSColor(calibratedRed: 50/255, green: 200/255, blue: 100/255, alpha: 0.5).cgColor
         }
-        
+
         if !ioDevices[index].isPaired() {
             itemView.layer?.backgroundColor = NSColor(calibratedRed: 255, green: 0, blue: 0, alpha: 0.5).cgColor
         }
-        
+
         return itemView
     }
+    
+//    func scrubber(_ scrubber: NSScrubber, viewForItemAt index: Int) -> NSScrubberItemView {
+//
+//        let itemView = scrubber.makeItem(withIdentifier: scrubberDeviceItemID, owner: nil) as! NSScrubberImageItemView
+//
+//        if ioDevices[index].nameOrAddress.contains("iPhone") {
+//            itemView.image = #imageLiteral(resourceName: "iphone")
+//        } else if ioDevices[index].nameOrAddress.contains("Mouse") {
+//            itemView.image = #imageLiteral(resourceName: "mouse")
+//        } else if ioDevices[index].nameOrAddress.contains("Keyboard") {
+//            itemView.image = #imageLiteral(resourceName: "keyboard")
+//        } else if ioDevices[index].nameOrAddress.contains("Trackpad") {
+//            itemView.image = #imageLiteral(resourceName: "trackpad")
+//        } else if ioDevices[index].nameOrAddress.contains("Watch") {
+//            itemView.image = #imageLiteral(resourceName: "watch")
+//        } else if ioDevices[index].nameOrAddress.contains("Airpods") {
+//            itemView.image = #imageLiteral(resourceName: "airpods")
+//        }
+//        return itemView
+//    }
+//
     
     func scrubber(_ scrubber: NSScrubber, didHighlightItemAt highlightedIndex: Int) {
         
@@ -173,10 +193,12 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
 
             print("Not yet Paired")
 
-            let pairingController = IOBluetoothPairingController(windowNibName: NSNib.Name(rawValue: "Window"))
+            let pairingController = IOBluetoothPairingController()
+            pairingController.setOptions(1)
             pairingController.runModal()
+            pairingController.getResults()
 
-            print("Attmept to pair")
+            print("Attempt to pair")
         }
 
 
@@ -210,6 +232,9 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
     @IBAction func rescanButtonPressed(_ sender: Any) {
         print("rescan")
+        
+        progressIndicator.startAnimation(self)
+        progressIndicator.isHidden = false
     
         timer?.fire()
         ioDevices.removeAll()
@@ -221,23 +246,11 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
  
     }
     
-    
-    
-    @IBAction func setClassic(_ sender: NSButton) {
-        
-        ioBluetoothManager.searchType = kIOBluetoothDeviceSearchClassic.rawValue
-        
-        print("Search type Classic", kIOBluetoothDeviceSearchClassic.rawValue)
-        
-    }
-    @IBAction func setLE(_ sender: NSButton) {
-        print("Search type LE", kIOBluetoothDeviceSearchLE.rawValue)
-        ioBluetoothManager.searchType = kIOBluetoothDeviceSearchLE.rawValue
-        
-    }
-    
     @IBAction func rescanUI(_ sender: NSButton) {
         print("rescan")
+        
+        progressIndicator.startAnimation(self)
+        progressIndicator.isHidden = false
         
         timer?.fire()
         ioDevices.removeAll()
@@ -247,6 +260,11 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         tableView.reloadData()
         scrubber.reloadData()
         
+    }
+    @IBAction func stopButtonPressed(_ sender: Any) {
+        ioBluetoothManager.stop()
+        progressIndicator.stopAnimation(self)
+        progressIndicator.isHidden = true
     }
 }
 
