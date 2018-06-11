@@ -65,8 +65,6 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         
         ioBluetoothManager.start()
         
-        
-        
         timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(repeatScan), userInfo: nil, repeats: true)
 
         
@@ -164,7 +162,11 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         itemView.title = name
         
         if ioDevices[index].isConnected() {
-            itemView.layer?.backgroundColor = NSColor.gray.cgColor
+            itemView.layer?.backgroundColor = NSColor(calibratedRed: 50/255, green: 200/255, blue: 100/255, alpha: 0.5).cgColor
+        }
+        
+        if !ioDevices[index].isPaired() {
+            itemView.layer?.backgroundColor = NSColor(calibratedRed: 255, green: 0, blue: 0, alpha: 0.5).cgColor
         }
         
         return itemView
@@ -172,34 +174,52 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
     func scrubber(_ scrubber: NSScrubber, didHighlightItemAt highlightedIndex: Int) {
         
+        ioBluetoothManager.stop()
+        timer?.invalidate()
+        
         if ioDevices[highlightedIndex].isConnected() {
+            
             print("cancel connection")
             ioDevices[highlightedIndex].closeConnection()
             scrubber.itemViewForItem(at: highlightedIndex)?.layer?.backgroundColor = NSColor.clear.cgColor
-        } else if !ioDevices[highlightedIndex].isConnected() {
+            
+        } else if !ioDevices[highlightedIndex].isConnected(), ioDevices[highlightedIndex].isPaired()  {
+            
             DispatchQueue.global(qos: .background).async {
-                if !self.ioDevices[highlightedIndex].isPaired() {
-                    
-                    self.pairingController.runModal()
-                    self.pairingController.getResults()
-                }
                 self.ioDevices[highlightedIndex].openConnection()
             }
             
-            scrubber.itemViewForItem(at: highlightedIndex)?.layer?.backgroundColor = NSColor.gray.cgColor
+            scrubber.itemViewForItem(at: highlightedIndex)?.isSelected = !(scrubber.itemViewForItem(at: highlightedIndex)?.isSelected)!
+            ioBluetoothManager.stop()
+            timer?.invalidate()
+            print("timer killed")
+            
+            scrubber.itemViewForItem(at: highlightedIndex)?.layer?.backgroundColor = NSColor(calibratedRed: 50/255, green: 200/255, blue: 100/255, alpha: 0.5).cgColor
             print("connecting to \(ioDevices[highlightedIndex].nameOrAddress ?? "no name")")
+            
+        } else if !ioDevices[highlightedIndex].isPaired() {
+
+            print("Not yet Paired")
+
+            let pairingController = IOBluetoothPairingController()
+            let options = IOBluetoothServiceBrowserControllerOptions(kIOBluetoothServiceBrowserControllerOptionsNone)
+
+            pairingController.setOptions(options)
+            pairingController.setTitle("Pairing")
+            pairingController.setPrompt("Pair suka")
+            pairingController.runModal()
+
+            print("Attmept to pair")
+
+            IOBluetoothGetPairingController()
         }
 
-        scrubber.itemViewForItem(at: highlightedIndex)?.isSelected = !(scrubber.itemViewForItem(at: highlightedIndex)?.isSelected)!
-        ioBluetoothManager.stop()
-        timer?.invalidate()
-        print("timer killed")
+
     }
     
     //MARK: Misc
     
     @objc func repeatScan() {
-        ioBluetoothManager.stop()
         ioBluetoothManager.start()
     }
     
