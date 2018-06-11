@@ -42,8 +42,6 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     let ioBluetoothManager = IOBluetoothDeviceInquiry()
     let pairingController = IOBluetoothPairingController(windowNibName: NSNib.Name(rawValue: "PairingController"))
     
-    var l2channel = IOBluetoothL2CAPChannel()
-    
     var timer: Timer? = nil
     
     var scrubberDeviceItemID = NSUserInterfaceItemIdentifier("Device")
@@ -51,17 +49,13 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        //bluetoothManager.delegate = self
+
         tableView.delegate = self
         tableView.dataSource = self
         
         scrubber.delegate = self
         scrubber.dataSource = self
         scrubber.register(NSScrubberTextItemView.self, forItemIdentifier: scrubberDeviceItemID)
-        
-        //loadConnected()
-        
-        l2channel.setDelegate(self)
         
         ioBluetoothManager.searchType = kIOBluetoothDeviceSearchLE.rawValue
         ioBluetoothManager.updateNewDeviceNames = true
