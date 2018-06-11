@@ -61,31 +61,14 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         ioBluetoothManager.updateNewDeviceNames = true
         ioBluetoothManager.delegate = self
         
-        loadPairedDevices()
-        
         ioBluetoothManager.start()
+        loadPairedDevices()
         
         timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(repeatScan), userInfo: nil, repeats: true)
 
         
     }
-    
-    override func viewWillDisappear() {
-        print("kill timer")
-    }
-    
-    func loadPairedDevices() {
-        
-        for device in IOBluetoothDevice.pairedDevices() {
-            ioDevices.append(device as! IOBluetoothDevice)
-            
-            tableView.reloadData()
-            scrubber.reloadData()
-        }
-        
-    }
-    
-    
+
     //MARK:- Tableview delegate and datasource
     
     func numberOfRows(in tableView: NSTableView) -> Int {
@@ -101,20 +84,10 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         
         if tableColumn == tableView.tableColumns[0] {
             
-            if let name = item.nameOrAddress {
-                text = name
-            } else {
-                text = "Unnamed device"
-            }
+            text = item.nameOrAddress
             cellIdentifier = CellIdentifiers.NameCell
-        } else if tableColumn == tableView.tableColumns[1] {
-            text = item.addressString
-            cellIdentifier = CellIdentifiers.UUIDCell
-        } else if tableColumn == tableView.tableColumns[2] {
-            text = String(item.isConnected())
-            cellIdentifier = CellIdentifiers.StatusCell
         }
-        
+            
         if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellIdentifier), owner: nil) as? NSTableCellView {
             
             cell.textField?.stringValue = text
@@ -188,7 +161,6 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
             DispatchQueue.global(qos: .background).async {
                 self.ioDevices[highlightedIndex].openConnection()
             }
-            
             scrubber.itemViewForItem(at: highlightedIndex)?.isSelected = !(scrubber.itemViewForItem(at: highlightedIndex)?.isSelected)!
             ioBluetoothManager.stop()
             timer?.invalidate()
@@ -201,17 +173,10 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
 
             print("Not yet Paired")
 
-            let pairingController = IOBluetoothPairingController()
-            let options = IOBluetoothServiceBrowserControllerOptions(kIOBluetoothServiceBrowserControllerOptionsNone)
-
-            pairingController.setOptions(options)
-            pairingController.setTitle("Pairing")
-            pairingController.setPrompt("Pair suka")
+            let pairingController = IOBluetoothPairingController(windowNibName: NSNib.Name(rawValue: "Window"))
             pairingController.runModal()
 
             print("Attmept to pair")
-
-            IOBluetoothGetPairingController()
         }
 
 
@@ -219,7 +184,25 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
     //MARK: Misc
     
+    
+    func loadPairedDevices() {
+        
+        for device in IOBluetoothDevice.pairedDevices() {
+            ioDevices.append(device as! IOBluetoothDevice)
+            
+            tableView.reloadData()
+            scrubber.reloadData()
+        }
+        
+        if scrubber.numberOfItems == 0 {
+            scrubber.showsArrowButtons = false
+        }
+        
+    }
+    
+    
     @objc func repeatScan() {
+        ioBluetoothManager.clearFoundDevices()
         ioBluetoothManager.start()
     }
     
@@ -230,9 +213,9 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
         timer?.fire()
         ioDevices.removeAll()
-        loadPairedDevices()
         repeatScan()
-
+        loadPairedDevices()
+        
         tableView.reloadData()
         scrubber.reloadData()
  
