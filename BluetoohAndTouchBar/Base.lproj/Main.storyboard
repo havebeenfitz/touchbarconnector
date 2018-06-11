@@ -4,6 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaDFRPlugin" version="14019"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
         <capability name="the Touch Bar" minToolsVersion="8.1" minSystemVersion="10.12.2" requiredIntegratedClassName="NSTouchBar"/>
     </dependencies>
     <scenes>
@@ -383,24 +384,59 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AUv-v3-1GA">
-                                <rect key="frame" x="225" y="-7" width="167" height="32"/>
-                                <buttonCell key="cell" type="push" title="Show IOBTController" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QuJ-FG-oED">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="showIOBTController:" target="XfG-lQ-9wD" id="c6k-Qy-RBI"/>
-                                </connections>
-                            </button>
+                            <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rGf-7G-sJJ">
+                                <rect key="frame" x="183" y="0.0" width="251" height="21"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AUv-v3-1GA">
+                                        <rect key="frame" x="-6" y="-7" width="107" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Set Classic" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QuJ-FG-oED">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="setClassic:" target="XfG-lQ-9wD" id="eUj-KQ-3eK"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ri7-dl-xEO">
+                                        <rect key="frame" x="97" y="-7" width="79" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Set LE" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hMi-7R-nuS">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="setLE:" target="XfG-lQ-9wD" id="iPa-BR-x9c"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="08h-Kz-zZq">
+                                        <rect key="frame" x="172" y="-7" width="85" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Rescan" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="shl-aM-LVj">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="rescanUI:" target="XfG-lQ-9wD" id="n9j-l7-RgY"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="hPO-Ic-eSm" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="4wb-ef-w4t"/>
                             <constraint firstAttribute="trailing" secondItem="hPO-Ic-eSm" secondAttribute="trailing" id="BLh-3Z-RoC"/>
+                            <constraint firstAttribute="bottom" secondItem="rGf-7G-sJJ" secondAttribute="bottom" id="CG6-f0-hV4"/>
                             <constraint firstAttribute="bottom" secondItem="hPO-Ic-eSm" secondAttribute="bottom" constant="20" symbolic="YES" id="EvY-Og-kVx"/>
                             <constraint firstItem="hPO-Ic-eSm" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Hvb-oQ-5PL"/>
-                            <constraint firstAttribute="bottom" secondItem="AUv-v3-1GA" secondAttribute="bottom" id="JMV-Vz-W3C"/>
-                            <constraint firstItem="hPO-Ic-eSm" firstAttribute="centerX" secondItem="AUv-v3-1GA" secondAttribute="centerX" id="pvv-Z6-MTE"/>
+                            <constraint firstItem="rGf-7G-sJJ" firstAttribute="centerX" secondItem="hPO-Ic-eSm" secondAttribute="centerX" id="IUK-sk-ujd"/>
                         </constraints>
                     </view>
                     <connections>

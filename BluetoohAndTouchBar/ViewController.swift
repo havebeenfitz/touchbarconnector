@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import CoreBluetooth
 import IOBluetooth
 import IOBluetoothUI
 import ColorSync
@@ -28,7 +27,7 @@ fileprivate enum DeviceType {
 //MARK:- Controller
 
 class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource,
-                      CBCentralManagerDelegate, CBPeripheralDelegate,
+    
                       NSScrubberDelegate, NSScrubberDataSource,
                       IOBluetoothDeviceInquiryDelegate, IOBluetoothHandsFreeDelegate, IOBluetoothHandsFreeDeviceDelegate {
    
@@ -39,11 +38,11 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     @IBOutlet weak var scrubber: NSScrubber!
     
     //MARK:- Vars
-
-    let bluetoothManager = CBCentralManager()
-    
-    var devices = [CBPeripheral]()
-    var tempDevice = [CBPeripheral]()
+//
+//    let bluetoothManager = CBCentralManager()
+//
+//    var devices = [CBPeripheral]()
+//    var tempDevice = [CBPeripheral]()
     let cbuuids = [AirpodsProfiles().audioSinkProfile,
                    AirpodsProfiles().avrcpRemoteControlControllerProfile,
                    AirpodsProfiles().avrcpRemoteControlProfile,
@@ -51,7 +50,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
                    AirpodsProfiles().handsFreeProfile]
     
     var ioDevices = [IOBluetoothDevice]()
-    let ioBluetoothManager = IOBluetoothDeviceInquiry(delegate: self)
+    let ioBluetoothManager = IOBluetoothDeviceInquiry()
     
     var timer: Timer? = nil
     
@@ -60,7 +59,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        bluetoothManager.delegate = self
+        //bluetoothManager.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -68,10 +67,12 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         scrubber.dataSource = self
         scrubber.register(NSScrubberTextItemView.self, forItemIdentifier: scrubberDeviceItemID)
         
-        bluetoothManager.delegate = self
+        ioBluetoothManager.searchType = kIOBluetoothDeviceSearchLE.rawValue
+        ioBluetoothManager.delegate = self
         
-        ioBluetoothManager?.delegate = self
-        ioBluetoothManager?.start()
+        ioBluetoothManager.start()
+        
+        
         loadConnectedDevices()
         timer = Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(repeatScan), userInfo: nil, repeats: true)
 
@@ -122,63 +123,63 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
     //MARK:- Bluetooth Central manager delegate
     
-    func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        switch central.state {
-        case .poweredOn:
-            print("powered on")
-            central.scanForPeripherals(withServices: nil, options: nil)
-        case .unknown:
-            print("state unknown")
-        case .resetting:
-            print("resetting")
-        case .unsupported:
-            print("unsupported")
-        case .unauthorized:
-            print("unauthorized")
-        case .poweredOff:
-            print("powered off")
-            bluetoothManager.stopScan()
-        }
-    }
+//    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+//        switch central.state {
+//        case .poweredOn:
+//            print("powered on")
+//            central.scanForPeripherals(withServices: nil, options: nil)
+//        case .unknown:
+//            print("state unknown")
+//        case .resetting:
+//            print("resetting")
+//        case .unsupported:
+//            print("unsupported")
+//        case .unauthorized:
+//            print("unauthorized")
+//        case .poweredOff:
+//            print("powered off")
+//            bluetoothManager.stopScan()
+//        }
+//    }
+//    
+//    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+//        print("found", peripheral.name ?? "default")
+//        if !devices.contains(peripheral) && peripheral.name != nil {
+//            devices.append(peripheral)
+//            tableView.reloadData()
+//            scrubber.reloadData()
+//        }
+//    }
+//
+//    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+//        
+//        print("connected")
+//        central.stopScan()
+//        tableView.reloadData()
+//        tempDevice.append(peripheral)
+//        tempDevice.first!.delegate = self
+//        tempDevice.first!.discoverServices(cbuuids)
+//
+//
+//    }
     
-    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        print("found", peripheral.name ?? "default")
-        if !devices.contains(peripheral) && peripheral.name != nil {
-            devices.append(peripheral)
-            tableView.reloadData()
-            scrubber.reloadData()
-        }
-    }
-    
-    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        
-        print("connected")
-        central.stopScan()
-        tableView.reloadData()
-        tempDevice.append(peripheral)
-        tempDevice.first!.delegate = self
-        tempDevice.first!.discoverServices(cbuuids)
-        
-        
-    }
-    
-    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-        print("fail to connect")
-    }
-    
-    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        print("disconnected")
-        tableView.reloadData()
-    }
-    
+//    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+//        print("fail to connect")
+//    }
+//
+//    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+//        print("disconnected")
+//        tableView.reloadData()
+//    }
+//
     //MARK: CBPeripherial Delegate
     
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        
-        //tempDevice.append(peripheral)
-        print(peripheral.services ?? "no services")
-        
-    }
+//    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+//
+//        //tempDevice.append(peripheral)
+//        print(peripheral.services ?? "no services")
+//
+//    }
     
     //MARK: IOBluetooth Devices Inquiry Delegate
     
@@ -187,15 +188,13 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     }
 
     func deviceInquiryDeviceFound(_ sender: IOBluetoothDeviceInquiry!, device: IOBluetoothDevice!) {
-        print("found device")
+        print("found device", device.nameOrAddress)
         ioDevices.append(device)
         scrubber.reloadData()
         tableView.reloadData()
     }
 
     func deviceInquiryComplete(_ sender: IOBluetoothDeviceInquiry!, error: IOReturn, aborted: Bool) {
-       
-        print(sender.foundDevices())
         print("completed")
     }
     
@@ -230,7 +229,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         }
 
         scrubber.itemViewForItem(at: highlightedIndex)?.isSelected = !(scrubber.itemViewForItem(at: highlightedIndex)?.isSelected)!
-        ioBluetoothManager?.stop()
+        ioBluetoothManager.stop()
         timer?.invalidate()
         print("timer killed")
     }
@@ -238,14 +237,13 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     //MARK: Misc
     
     @objc func repeatScan() {
-        ioBluetoothManager?.stop()
-        ioBluetoothManager?.delegate = self
-        ioBluetoothManager?.start()
+        ioBluetoothManager.stop()
+        ioBluetoothManager.start()
     }
     
     func loadConnectedDevices() {
         
-        ioDevices += (ioBluetoothManager?.foundDevices() as! [IOBluetoothDevice])
+        ioDevices += (ioBluetoothManager.foundDevices() as! [IOBluetoothDevice])
         tableView.reloadData()
         scrubber.reloadData()
         
@@ -261,23 +259,44 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         
         repeatScan()
         
-        devices.removeAll()
+        //devices.removeAll()
         tableView.reloadData()
         scrubber.reloadData()
         
-        bluetoothManager.scanForPeripherals(withServices: nil, options: nil)
-        
-    }
-    @IBAction func showIOBTController(_ sender: NSButton) {
-        
-        let options = IOBluetoothServiceBrowserControllerOptions(0)
-        let window = IOBluetoothServiceBrowserController(options)
-        
-        window?.setOptions(options)
-        window?.runModal()
-        print( window?.getResults())
+        //bluetoothManager.scanForPeripherals(withServices: nil, options: nil)
         
     }
     
+    
+    
+    @IBAction func setClassic(_ sender: NSButton) {
+        
+        ioBluetoothManager.searchType = kIOBluetoothDeviceSearchClassic.rawValue
+        
+        print("TYPE CLASSIC", kIOBluetoothDeviceSearchClassic.rawValue)
+
+//        let options = IOBluetoothServiceBrowserControllerOptions(0)
+//        let window = IOBluetoothServiceBrowserController(options)
+//        window?.setOptions(options)
+//        window?.runModal()
+//        print(window?.getResults())
+        
+    }
+    @IBAction func setLE(_ sender: NSButton) {
+        print("TYPE LE", kIOBluetoothDeviceSearchLE.rawValue)
+        ioBluetoothManager.searchType = kIOBluetoothDeviceSearchLE.rawValue
+    }
+    
+    @IBAction func rescanUI(_ sender: NSButton) {
+        print("rescan")
+        
+        timer?.fire()
+        ioDevices.removeAll()
+        repeatScan()
+
+        tableView.reloadData()
+        scrubber.reloadData()
+        
+    }
 }
 
