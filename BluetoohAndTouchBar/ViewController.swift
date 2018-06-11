@@ -63,7 +63,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         ioBluetoothManager.updateNewDeviceNames = true
         ioBluetoothManager.delegate = self
         
-        loadConnected()
+        loadPairedDevices()
         
         ioBluetoothManager.start()
         
@@ -78,7 +78,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         print("kill timer")
     }
     
-    func loadConnected() {
+    func loadPairedDevices() {
         
         for device in IOBluetoothDevice.pairedDevices() {
             ioDevices.append(device as! IOBluetoothDevice)
@@ -205,9 +205,10 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
     @IBAction func rescanButtonPressed(_ sender: Any) {
         print("rescan")
-        
+    
         timer?.fire()
         ioDevices.removeAll()
+        loadPairedDevices()
         repeatScan()
 
         tableView.reloadData()
@@ -248,7 +249,8 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         timer?.fire()
         ioDevices.removeAll()
         repeatScan()
-
+        loadPairedDevices()
+        
         tableView.reloadData()
         scrubber.reloadData()
         
