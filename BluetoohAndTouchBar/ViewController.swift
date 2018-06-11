@@ -135,9 +135,12 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
 
     func deviceInquiryDeviceFound(_ sender: IOBluetoothDeviceInquiry!, device: IOBluetoothDevice!) {
         print("found device", device.nameOrAddress)
-        ioDevices.append(device)
-        scrubber.reloadData()
-        tableView.reloadData()
+        if !ioDevices.contains(device) {
+            ioDevices.append(device)
+            scrubber.reloadData()
+            tableView.reloadData()
+        }
+        
     }
 
     func deviceInquiryComplete(_ sender: IOBluetoothDeviceInquiry!, error: IOReturn, aborted: Bool) {
@@ -222,24 +225,12 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         
         ioBluetoothManager.searchType = kIOBluetoothDeviceSearchClassic.rawValue
         
-        print("TYPE CLASSIC", kIOBluetoothDeviceSearchClassic.rawValue)
-
-        let options = IOBluetoothServiceBrowserControllerOptions(0)
-        let window = IOBluetoothServiceBrowserController(options)
-        window?.setOptions(options)
-        window?.runModal()
-        print(window?.getResults())
+        print("Search type Classic", kIOBluetoothDeviceSearchClassic.rawValue)
         
     }
     @IBAction func setLE(_ sender: NSButton) {
-        print("TYPE LE", kIOBluetoothDeviceSearchLE.rawValue)
+        print("Search type LE", kIOBluetoothDeviceSearchLE.rawValue)
         ioBluetoothManager.searchType = kIOBluetoothDeviceSearchLE.rawValue
-        
-        
-        
-        let deviceSelector = IOBluetoothDeviceSelectorController(windowNibName: NSNib.Name(rawValue: "PairingController"))
-        deviceSelector.setOptions(IOBluetoothServiceBrowserControllerOptions.init(exactly: 0)!)
-        deviceSelector.runModal()
         
     }
     
