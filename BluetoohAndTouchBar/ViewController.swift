@@ -37,16 +37,10 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     @IBOutlet weak var scrubber: NSScrubber!
     
     //MARK:- Vars
-
-    let cbuuids = [AirpodsProfiles().audioSinkProfile,
-                   AirpodsProfiles().avrcpRemoteControlControllerProfile,
-                   AirpodsProfiles().avrcpRemoteControlProfile,
-                   AirpodsProfiles().avrcpTargetProfile,
-                   AirpodsProfiles().handsFreeProfile]
     
     var ioDevices = [IOBluetoothDevice]()
     let ioBluetoothManager = IOBluetoothDeviceInquiry()
-    let pairingController = IOBluetoothPairingController()
+    let pairingController = IOBluetoothPairingController(windowNibName: NSNib.Name(rawValue: "PairingController"))
     
     var timer: Timer? = nil
     
@@ -69,7 +63,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         
         ioBluetoothManager.start()
         
-        timer = Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(repeatScan), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(repeatScan), userInfo: nil, repeats: true)
 
         
     }
@@ -162,7 +156,9 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         } else {
             DispatchQueue.global(qos: .background).async {
                 if !self.ioDevices[highlightedIndex].isPaired() {
+                    
                     self.pairingController.runModal()
+                    self.pairingController.getResults()
                 }
                 self.ioDevices[highlightedIndex].openConnection()
             }
@@ -186,10 +182,6 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
     func loadConnectedDevices() {
         
-//        ioDevices += (ioBluetoothManager.foundDevices() as! [IOBluetoothDevice])
-//        tableView.reloadData()
-//        scrubber.reloadData()
-//
     }
     
     //MARK: Actions
@@ -199,15 +191,11 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         
         timer?.fire()
         ioDevices.removeAll()
-        
         repeatScan()
-        
-        //devices.removeAll()
+
         tableView.reloadData()
         scrubber.reloadData()
-        
-        //bluetoothManager.scanForPeripherals(withServices: nil, options: nil)
-        
+ 
     }
     
     
@@ -218,16 +206,23 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         
         print("TYPE CLASSIC", kIOBluetoothDeviceSearchClassic.rawValue)
 
-//        let options = IOBluetoothServiceBrowserControllerOptions(0)
-//        let window = IOBluetoothServiceBrowserController(options)
-//        window?.setOptions(options)
-//        window?.runModal()
-//        print(window?.getResults())
+        let options = IOBluetoothServiceBrowserControllerOptions(0)
+        let window = IOBluetoothServiceBrowserController(options)
+        window?.setOptions(options)
+        window?.runModal()
+        print(window?.getResults())
         
     }
     @IBAction func setLE(_ sender: NSButton) {
         print("TYPE LE", kIOBluetoothDeviceSearchLE.rawValue)
         ioBluetoothManager.searchType = kIOBluetoothDeviceSearchLE.rawValue
+        
+        
+        
+        let deviceSelector = IOBluetoothDeviceSelectorController(windowNibName: NSNib.Name(rawValue: "PairingController"))
+        deviceSelector.setOptions(IOBluetoothServiceBrowserControllerOptions.init(exactly: 0)!)
+        deviceSelector.runModal()
+        
     }
     
     @IBAction func rescanUI(_ sender: NSButton) {

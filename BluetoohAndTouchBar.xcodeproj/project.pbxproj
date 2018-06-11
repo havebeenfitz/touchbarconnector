@@ -11,7 +11,6 @@
 		E497D4F020ACC0920039DA03 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497D4EF20ACC0920039DA03 /* ViewController.swift */; };
 		E497D4F220ACC0940039DA03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E497D4F120ACC0940039DA03 /* Assets.xcassets */; };
 		E497D4F520ACC0940039DA03 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E497D4F320ACC0940039DA03 /* Main.storyboard */; };
-		E4ADB53B20C8FE0D006E6723 /* AirpodsProfiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4ADB53A20C8FE0D006E6723 /* AirpodsProfiles.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,7 +21,6 @@
 		E497D4F420ACC0940039DA03 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E497D4F620ACC0940039DA03 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E497D4F720ACC0940039DA03 /* BluetoohAndTouchBar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BluetoohAndTouchBar.entitlements; sourceTree = "<group>"; };
-		E4ADB53A20C8FE0D006E6723 /* AirpodsProfiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirpodsProfiles.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +55,6 @@
 			children = (
 				E497D4ED20ACC0920039DA03 /* AppDelegate.swift */,
 				E497D4EF20ACC0920039DA03 /* ViewController.swift */,
-				E4ADB53A20C8FE0D006E6723 /* AirpodsProfiles.swift */,
 				E497D4F120ACC0940039DA03 /* Assets.xcassets */,
 				E497D4F320ACC0940039DA03 /* Main.storyboard */,
 				E497D4F620ACC0940039DA03 /* Info.plist */,
@@ -136,7 +133,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4ADB53B20C8FE0D006E6723 /* AirpodsProfiles.swift in Sources */,
 				E497D4F020ACC0920039DA03 /* ViewController.swift in Sources */,
 				E497D4EE20ACC0920039DA03 /* AppDelegate.swift in Sources */,
 			);
