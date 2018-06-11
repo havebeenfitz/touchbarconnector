@@ -180,13 +180,9 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         ioBluetoothManager.start()
     }
     
-    func loadConnectedDevices() {
-        
-    }
-    
     //MARK: Actions
     
-    @IBAction func connectButtonPressed(_ sender: Any) {
+    @IBAction func rescanButtonPressed(_ sender: Any) {
         print("rescan")
         
         timer?.fire()
