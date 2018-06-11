@@ -28,7 +28,7 @@ fileprivate enum DeviceType {
 
 class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource,
                       NSScrubberDelegate, NSScrubberDataSource,
-                      IOBluetoothDeviceInquiryDelegate, IOBluetoothHandsFreeDelegate, IOBluetoothHandsFreeDeviceDelegate {
+                      IOBluetoothDeviceInquiryDelegate {
    
     //MARK:- Outlets
     
@@ -41,6 +41,8 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     var ioDevices = [IOBluetoothDevice]()
     let ioBluetoothManager = IOBluetoothDeviceInquiry()
     let pairingController = IOBluetoothPairingController(windowNibName: NSNib.Name(rawValue: "PairingController"))
+    
+    var l2channel = IOBluetoothL2CAPChannel()
     
     var timer: Timer? = nil
     
@@ -58,6 +60,8 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         scrubber.register(NSScrubberTextItemView.self, forItemIdentifier: scrubberDeviceItemID)
         
         //loadConnected()
+        
+        l2channel.setDelegate(self)
         
         ioBluetoothManager.searchType = kIOBluetoothDeviceSearchLE.rawValue
         ioBluetoothManager.updateNewDeviceNames = true
@@ -88,6 +92,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         }
         
     }
+    
     
     //MARK:- Tableview delegate and datasource
     
