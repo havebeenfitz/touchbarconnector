@@ -33,7 +33,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     //MARK:- Vars
     
     var ioDevices = [IOBluetoothDevice]()
-    let ioBluetoothManager = IOBluetoothDeviceInquiry()
+    let ioBluetoothInquiryManager = IOBluetoothDeviceInquiry()
     let pairingDevice = IOBluetoothDevicePair()
     
     
@@ -53,12 +53,12 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         scrubber.register(NSScrubberTextItemView.self, forItemIdentifier: scrubberDeviceItemID)
         //scrubber.register(NSScrubberImageItemView.self, forItemIdentifier: scrubberDeviceItemID)
         
-        ioBluetoothManager.searchType = kIOBluetoothDeviceSearchLE.rawValue
-        ioBluetoothManager.updateNewDeviceNames = true
-        ioBluetoothManager.delegate = self
+        ioBluetoothInquiryManager.searchType = kIOBluetoothDeviceSearchLE.rawValue
+        ioBluetoothInquiryManager.updateNewDeviceNames = true
+        ioBluetoothInquiryManager.delegate = self
         pairingDevice.delegate = self
         
-        ioBluetoothManager.start()
+        ioBluetoothInquiryManager.start()
         progressIndicator.startAnimation(self)
         loadPairedDevices()
         
@@ -170,7 +170,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
     func scrubber(_ scrubber: NSScrubber, didHighlightItemAt highlightedIndex: Int) {
         
-        ioBluetoothManager.stop()
+        ioBluetoothInquiryManager.stop()
         timer?.invalidate()
         
         if ioDevices[highlightedIndex].isConnected() {
@@ -185,7 +185,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
                 self.ioDevices[highlightedIndex].openConnection()
             }
             scrubber.itemViewForItem(at: highlightedIndex)?.isSelected = !(scrubber.itemViewForItem(at: highlightedIndex)?.isSelected)!
-            ioBluetoothManager.stop()
+            ioBluetoothInquiryManager.stop()
             timer?.invalidate()
             print("timer killed")
             
@@ -210,7 +210,6 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
     func devicePairingStarted(_ sender: Any!) {
         print("Pairing started")
-        
     }
     
     func devicePairingConnecting(_ sender: Any!) {
@@ -256,8 +255,8 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
     
     @objc func repeatScan() {
-        ioBluetoothManager.clearFoundDevices()
-        ioBluetoothManager.start()
+        ioBluetoothInquiryManager.clearFoundDevices()
+        ioBluetoothInquiryManager.start()
     }
     
     //MARK: Actions
@@ -286,7 +285,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         
         timer?.fire()
         ioDevices.removeAll()
-        ioBluetoothManager.clearFoundDevices()
+        ioBluetoothInquiryManager.clearFoundDevices()
         
         tableView.reloadData()
         scrubber.reloadData()
@@ -300,7 +299,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     }
     @IBAction func stopButtonPressed(_ sender: Any) {
         timer?.invalidate()
-        ioBluetoothManager.stop()
+        ioBluetoothInquiryManager.stop()
         progressIndicator.stopAnimation(self)
         progressIndicator.isHidden = true
     }
