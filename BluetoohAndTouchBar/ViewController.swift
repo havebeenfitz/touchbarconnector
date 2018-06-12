@@ -15,20 +15,13 @@ import ColorSync
 
 fileprivate enum CellIdentifiers {
     static let NameCell = "NameCellID"
-    static let UUIDCell = "UUIDCellID"
-    static let StatusCell = "StatusCellID"
-}
-
-fileprivate enum DeviceType {
-    case oldDevice
-    case newDevice
 }
 
 //MARK:- Controller
 
 class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource,
                       NSScrubberDelegate, NSScrubberDataSource,
-                      IOBluetoothDeviceInquiryDelegate {
+                      IOBluetoothDeviceInquiryDelegate, IOBluetoothDevicePairDelegate {
    
     //MARK:- Outlets
     
@@ -41,6 +34,8 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
     var ioDevices = [IOBluetoothDevice]()
     let ioBluetoothManager = IOBluetoothDeviceInquiry()
+    let pairingDevice = IOBluetoothDevicePair()
+    
     
     var timer: Timer? = nil
     
@@ -61,6 +56,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         ioBluetoothManager.searchType = kIOBluetoothDeviceSearchLE.rawValue
         ioBluetoothManager.updateNewDeviceNames = true
         ioBluetoothManager.delegate = self
+        pairingDevice.delegate = self
         
         ioBluetoothManager.start()
         progressIndicator.startAnimation(self)
@@ -199,16 +195,39 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         } else if !ioDevices[highlightedIndex].isPaired() {
 
             print("Not yet Paired")
-
-            let pairingController = IOBluetoothPairingController()
-            pairingController.setOptions(1)
-            pairingController.runModal()
-            pairingController.getResults()
-
             print("Attempt to pair")
+            
+            pairingDevice.setDevice(ioDevices[highlightedIndex])
+            pairingDevice.start()
+            
+            
         }
 
 
+    }
+    
+    //MARK: Device Pairing delegate
+    
+    func devicePairingStarted(_ sender: Any!) {
+        print("Pairing started")
+        pairingDevice.replyUserConfirmation(true)
+    }
+    
+    func devicePairingConnecting(_ sender: Any!) {
+        print("Connecting")
+    }
+    
+    func devicePairingUserPasskeyNotification(_ sender: Any!, passkey: BluetoothPasskey) {
+        print(passkey)
+    }
+    
+    func devicePairingPINCodeRequest(_ sender: Any!) {
+        print("PIN requested")
+    }
+    
+    func devicePairingFinished(_ sender: Any!, error: IOReturn) {
+        print(error)
+        print("finished")
     }
     
     //MARK: Misc
@@ -218,7 +237,6 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         
         for device in IOBluetoothDevice.pairedDevices() {
             ioDevices.append(device as! IOBluetoothDevice)
-            
             tableView.reloadData()
             scrubber.reloadData()
         }
