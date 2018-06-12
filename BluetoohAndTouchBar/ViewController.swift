@@ -30,16 +30,17 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     @IBOutlet weak var scrubber: NSScrubber!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
     
-    //MARK:- Vars
+    //MARK: Vars
     
     var ioDevices = [IOBluetoothDevice]()
     let ioBluetoothInquiryManager = IOBluetoothDeviceInquiry()
     let pairingDevice = IOBluetoothDevicePair()
-    
-    
+
     var timer: Timer? = nil
     
     var scrubberDeviceItemID = NSUserInterfaceItemIdentifier("Device")
+    
+    //MARK: LifeCycle
     
     override func viewDidLoad() {
         
@@ -65,6 +66,10 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(repeatScan), userInfo: nil, repeats: true)
 
         
+    }
+    
+    override func viewDidDisappear() {
+        timer?.invalidate()
     }
 
     //MARK:- Tableview delegate and datasource
@@ -150,6 +155,8 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
 
         return itemView
     }
+    
+//    Pictures for scrubber. Выглядит пока хреново
     
 //    func scrubber(_ scrubber: NSScrubber, viewForItemAt index: Int) -> NSScrubberItemView {
 //
