@@ -135,13 +135,17 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         guard let name = ioDevices[index].nameOrAddress else { return itemView }
 
         itemView.title = name
-
-        if ioDevices[index].isConnected() {
-            itemView.layer?.backgroundColor = NSColor(calibratedRed: 50/255, green: 200/255, blue: 100/255, alpha: 0.5).cgColor
-        }
-
+        
         if !ioDevices[index].isPaired() {
             itemView.layer?.backgroundColor = NSColor(calibratedRed: 255, green: 0, blue: 0, alpha: 0.5).cgColor
+        }
+        
+        if ioDevices[index].isPaired(), !ioDevices[index].isConnected()  {
+            itemView.layer?.backgroundColor = NSColor.clear.cgColor
+        }
+    
+        if ioDevices[index].isConnected() {
+            itemView.layer?.backgroundColor = NSColor(calibratedRed: 50/255, green: 200/255, blue: 100/255, alpha: 0.5).cgColor
         }
 
         return itemView
@@ -183,22 +187,20 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
             
             DispatchQueue.global(qos: .background).async {
                 self.ioDevices[highlightedIndex].openConnection()
+                print("connecting to \(self.ioDevices[highlightedIndex].nameOrAddress ?? "no name")")
             }
-            scrubber.itemViewForItem(at: highlightedIndex)?.isSelected = !(scrubber.itemViewForItem(at: highlightedIndex)?.isSelected)!
-            ioBluetoothInquiryManager.stop()
-            timer?.invalidate()
-            print("timer killed")
             
+            scrubber.itemViewForItem(at: highlightedIndex)?.isSelected = !(scrubber.itemViewForItem(at: highlightedIndex)?.isSelected)!
             scrubber.itemViewForItem(at: highlightedIndex)?.layer?.backgroundColor = NSColor(calibratedRed: 50/255, green: 200/255, blue: 100/255, alpha: 0.5).cgColor
-            print("connecting to \(ioDevices[highlightedIndex].nameOrAddress ?? "no name")")
             
         } else if !ioDevices[highlightedIndex].isPaired() {
-
+        
             print("Not yet Paired")
             print("Attempt to pair")
             
             pairingDevice.setDevice(ioDevices[highlightedIndex])
             pairingDevice.start()
+            
             
             
         }
@@ -232,7 +234,6 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     func devicePairingFinished(_ sender: Any!, error: IOReturn) {
         print(error)
         print("finished")
-        tableView.reloadData()
         scrubber.reloadData()
     }
     
