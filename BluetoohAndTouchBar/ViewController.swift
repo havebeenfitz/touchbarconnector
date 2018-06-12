@@ -210,7 +210,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
     func devicePairingStarted(_ sender: Any!) {
         print("Pairing started")
-        pairingDevice.replyUserConfirmation(true)
+        
     }
     
     func devicePairingConnecting(_ sender: Any!) {
@@ -219,15 +219,22 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     
     func devicePairingUserPasskeyNotification(_ sender: Any!, passkey: BluetoothPasskey) {
         print(passkey)
+        pairingDevice.replyUserConfirmation(true)
     }
     
     func devicePairingPINCodeRequest(_ sender: Any!) {
         print("PIN requested")
     }
     
+    func deviceSimplePairingComplete(_ sender: Any!, status: BluetoothHCIEventStatus) {
+        print(status)
+    }
+    
     func devicePairingFinished(_ sender: Any!, error: IOReturn) {
         print(error)
         print("finished")
+        tableView.reloadData()
+        scrubber.reloadData()
     }
     
     //MARK: Misc
