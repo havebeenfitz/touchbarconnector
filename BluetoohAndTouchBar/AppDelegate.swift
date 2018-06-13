@@ -18,6 +18,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         guard let button = statusItem.button else { return }
         button.image = NSImage(named:NSImage.Name("StatusBarButtonImage"))
         button.action = #selector(applicationShouldHandleReopen(_:hasVisibleWindows:))
+        NSApp.setActivationPolicy(NSApplication.ActivationPolicy.regular)
+        NSApp.activate(ignoringOtherApps: true)
         constructMenu()
     }
     
@@ -30,7 +32,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-        return true
+        if flag {
+            NSApp.windows.last?.makeKeyAndOrderFront(self)
+            return true
+        } else {
+            return false
+        }
     }
     
     //MARK: Custom methods
@@ -39,6 +46,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let menu = NSMenu()
         menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Show", action: #selector(NSApplicationDelegate.applicationShouldHandleReopen(_:hasVisibleWindows:)), keyEquivalent: "w"))
+        menu.addItem(NSMenuItem(title: "Hide", action: #selector(NSApplication.hide(_:)), keyEquivalent: "e"))
         menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
         
         statusItem.menu = menu
