@@ -202,17 +202,12 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
             
         } else if !ioDevices[highlightedIndex].isPaired() {
         
-            print("Not yet Paired")
             print("Attempt to pair")
             
             pairingDevice.setDevice(ioDevices[highlightedIndex])
             pairingDevice.start()
-            
-            
-            
+
         }
-
-
     }
     
     //MARK: Device Pairing delegate
@@ -239,7 +234,6 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     }
     
     func devicePairingFinished(_ sender: Any!, error: IOReturn) {
-        print(error)
         print("finished")
         scrubber.reloadData()
     }
@@ -257,6 +251,8 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         
         if scrubber.numberOfItems == 0 {
             scrubber.showsArrowButtons = false
+        } else {
+            scrubber.showsArrowButtons = true
         }
         
     }
@@ -299,12 +295,9 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         scrubber.reloadData()
         
         repeatScan()
-        
         loadPairedDevices()
-        
-        
-        
     }
+    
     @IBAction func stopButtonPressed(_ sender: Any) {
         timer?.invalidate()
         ioBluetoothInquiryManager.stop()
